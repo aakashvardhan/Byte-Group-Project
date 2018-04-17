@@ -12,7 +12,7 @@ Your username and password didn't match.
     <div class="form-group">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Login</button>
+    <button type="submit" class="btn btn-primary">Login</button>
     &nbsp;&nbsp;&nbsp;&nbsp;<a href= "{% url 'polls:register' %}">Not yet registered?Sign Up</a>
     </div>
   </form>

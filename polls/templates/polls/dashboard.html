@@ -1,14 +1,16 @@
 {% extends 'polls/layout.html' %}
 {% block content %}
+<div class="container">
 {% if user.is_authenticated %}
 <h3 align="right"> Logged In: {{ user.username }} </h3>
 {% else %}
 <h3> You are not logged in </h3>
 {% endif %}
 <h2>DASHBOARD</h2>
+
 <br>
 <a href = "{% url 'polls:mypolls' %}" class="btn-primary">MY POLLS</a>
-<a href = "{% url 'polls:logout' %}" class="btn-primary" style="float:right">LOGOUT</a>
+<a href = "{% url 'polls:logout' %}" class="btn-primary">LOGOUT</a>
 <br>
 {% if latest_question_list %}
 <h3><u>DISCOVER POLLS</u></h3>
@@ -16,14 +18,14 @@
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
     <ul>
     {% for question in latest_question_list %}
-    <li>{{ question.question_text }}
+    <li>{{ question.question_text }}</li>
     <ul>
         
             <form action="{% url 'polls:vote' question.id %}"  method="post">
                     {% csrf_token %}
                     {% for choice in question.choice_set.all %}
                         <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />
-                        <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br />
+                        <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br/>
                     {% endfor %}
                     <input type="submit" value="Vote" />
             </form>
@@ -33,4 +35,5 @@
 {% else %}
     <p>No polls are available.</p>
 {% endif %}
+</div>
 {% endblock %}
