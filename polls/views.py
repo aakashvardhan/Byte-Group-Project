@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect, get_list_or_404
 
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 
 from .models import Question, Choice, Votes
 
@@ -16,11 +16,18 @@ from django.contrib.auth.models import User
 
 from django.urls import reverse
 
+import requests
+
+from django.conf import settings
+
+from django.contrib import messages
+
 def home(request):
     if request.user.is_authenticated:
         return redirect('polls:dashboard')
     
     return render(request, 'polls/home.html')
+
 
 def log_in(request):
     if request.user.is_authenticated:
@@ -57,17 +64,35 @@ def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=password)
-            login(request, user)
-            return redirect('polls:dashboard')
+            recaptcha_response = request.POST.get('g-recaptcha-response')
+            data = {
+                'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
+                'response': recaptcha_response
+            }
+            r = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
+            result = r.json()
+
+            if result['success']:
+                form.save()
+                username = form.cleaned_data.get('username')
+                password = form.cleaned_data.get('password1')
+                user = authenticate(username=username, password=password)
+                login(request, user)
+                return redirect('polls:dashboard')
+            else:
+                messages.error(request, 'Invalid reCAPTCHA. Please try again.')
     else:
         form = UserCreationForm()
 
     context = { 'form' : form }
     return render(request, 'polls/register.html', context)
+
+def validate_username(request):
+    username = request.GET.get('username', None)
+    data = {
+        'is_taken': User.objects.filter(username__iexact=username).exists()
+    }
+    return JsonResponse(data)
 
 @login_required(login_url='/login')
 def dashboard(request):

@@ -12,4 +12,5 @@ urlpatterns = [
     path('register/',views.register, name='register'),
     path('dashboard/vote/<int:question_id>/', views.vote, name='vote'),
     path('dashboard/mypolls/',views.mypolls, name='mypolls'),
+    path('ajax/validate_username',views.validate_username, name='validate_username'),
 ]

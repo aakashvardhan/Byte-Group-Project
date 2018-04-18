@@ -17,6 +17,12 @@ class Question(models.Model):
     def __str__(self):
         return self.question_text
 
+class SurveyChoice(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    survey_text = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.survey_text
 
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
