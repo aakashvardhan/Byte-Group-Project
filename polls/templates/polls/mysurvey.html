@@ -1,0 +1,43 @@
+{% extends 'polls/dashboardlayout.html' %}
+
+
+{% block content %}
+  <h1 class="page-header">My Surveys</h1>
+
+  <p>
+    <button type="button" class="btn btn-primary js-create-book">
+      <span class="glyphicon glyphicon-plus"></span>
+      New Survey
+    </button>
+  </p>
+  <table class="table" id="book-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Title</th>
+        <th>Modified</th>
+        <th>Responses</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for survey in survey_list %}
+        <tr>
+          <td>{{ survey.id }}</td>
+          <td>{{ survey.title }}</td>
+          <td>{{ survey.modified }}</td>
+          <td>{{ survey.responses }}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="7" class="text-center bg-warning">No Surveys</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="modal fade" id="modal-book">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      </div>
+    </div>
+{% endblock %}

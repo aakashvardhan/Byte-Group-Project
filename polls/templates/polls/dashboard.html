@@ -1,6 +1,7 @@
 {% extends 'polls/dashboardlayout.html' %}
+{% block title %}Dashboard{% endblock %}
 {% load static %}
-<link href="{% static 'polls/css/style.css' %}" rel="stylesheet">
+<link href="Byte-Group-Project/polls/static/css/style.css" rel="stylesheet">
 
 {% block content %}
 <div class="container">
@@ -10,14 +11,10 @@
 {% else %}
 <h3> You are not logged in </h3>
 {% endif %}
-<h2>DASHBOARD</h2>
-
-<br>
-<a href = "{% url 'polls:mypolls' %}" class="btn-primary">MY POLLS</a>
-<br>
+<div class="jumbotron">
 {% if latest_question_list %}
-<h3><u>DISCOVER POLLS</u></h3>
-<br><br>
+<h2 class="display-4">Discover Polls</h2>
+<br>
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
     <ul>
     {% for question in latest_question_list %}
@@ -30,7 +27,7 @@
                         <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />
                         <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br/>
                     {% endfor %}
-                    <input type="submit" value="Vote" />
+                    <input type="submit" class="btn btn-primary" value="Vote">
             </form>
     </ul>
     {% endfor %}
@@ -38,5 +35,6 @@
 {% else %}
     <p>No polls are available.</p>
 {% endif %}
+</div>
 </div>
 {% endblock %}

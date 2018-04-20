@@ -1,0 +1,10 @@
+{% extends 'polls/dashboardlayout.html' %}
+{% block content %}
+<form method="POST" action ="{% url 'polls:editchoice' choice.id %}" >
+        <div class="form-group">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">EDIT</button>
+        </div>
+        </form>
+{% endblock %}

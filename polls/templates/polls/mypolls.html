@@ -1,19 +1,35 @@
-{% extends 'polls/layout.html' %}
+{% extends 'polls/dashboardlayout.html' %}
 {% block content %}
+<div class="jumbotron">
+<button id="cbutton" class="btn-primary" data-toggle="modal" data-target="#basicModal" >CREATE POLLS</button>
+<div class="modal fade" id="basicModal" role="dialog">
+</div>
 {% if latest_question_list %}
-<h3>QUESTIONS</h3>
-<ul>
+<br><br>
+<h3><u>MY POLLS</u></h3>
+<div class="container">
+<ol>
     {% for question in latest_question_list %}
-    <li>{{ question.question_text }}
+    <li><h4>{{ question.question_text }}</h4>
+    <br><br>
+    <a href = "{% url 'polls:createchoice' question.id %}" class="btn-primary">CREATE CHOICES</a>
+    &nbsp;
+    <a href = "{% url 'polls:editpoll' question.id %}" class="btn-primary">EDIT POLL</a>
+    &nbsp;
+    <a href = "{% url 'polls:deletepoll' question.id %}" class="btn-primary">DELETE POLL</a>
+    <br><br><br>
     <ul>
         {% for choice in question.choice_set.all %}
-        <li>{{ choice.choice_text }}
+        <li><h5>{{ choice.choice_text }}---&nbsp;{{choice.votes}} votes</h5> </li>
+        <a href = "{% url 'polls:editchoice' choice.id %}">EDIT</a>
         {% endfor %}
     </ul>
     {% endfor %}
-</ul>
-        
+</ol>
 {% else %}
+<br><br>
 <p>No polls are available.</p>
 {% endif %}
+</div>
+</div>
 {% endblock %}

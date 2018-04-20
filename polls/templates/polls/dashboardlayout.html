@@ -2,6 +2,34 @@
 <html>
     <head>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+    $(document).ready(function(){
+        $("#cbutton").click(function(){
+            $("#basicModal").load("{% url 'polls:createpolls' %}");
+            });
+        });
+    </script>
+    <script>
+    $(function () {
+
+  $(".js-create-book").click(function () {
+    $.ajax({
+      url: '/dashboard/createsurvey/',
+      type: 'get',
+      dataType: 'json',
+      beforeSend: function () {
+        $("#modal-book").modal("show");
+      },
+      success: function (data) {
+        $("#modal-book .modal-content").html(data.html_form);
+      }
+    });
+  });
+
+});
+    </script>
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600' rel='stylesheet'>
         <style>
             .btn-primary {

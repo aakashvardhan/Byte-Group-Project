@@ -17,12 +17,6 @@ class Question(models.Model):
     def __str__(self):
         return self.question_text
 
-class SurveyChoice(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    survey_text = models.CharField(max_length=200)
-
-    def __str__(self):
-        return self.survey_text
 
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
@@ -38,3 +32,18 @@ class Votes(models.Model):
 
     def __str__(self):
         return self.username
+
+class Survey(models.Model):
+    title = models.CharField(max_length=50)
+    modified = models.DateTimeField('date modified')
+    responses = models.IntegerField(default=0)
+    username = models.ForeignKey(User,default='',on_delete=models.CASCADE)
+
+    def was_modified_recently(self):
+        return self.modified >= timezone.now() - datetime.timedelta(days=1)
+
+    def __str__(self):
+        return self.title
+
+
+
