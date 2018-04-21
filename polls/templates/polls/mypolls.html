@@ -1,5 +1,6 @@
 {% extends 'polls/dashboardlayout.html' %}
 {% block content %}
+<div id="maindiv">
 <div class="jumbotron">
 <button id="cbutton" class="btn-primary" data-toggle="modal" data-target="#basicModal" >CREATE POLLS</button>
 <div class="modal fade" id="basicModal" role="dialog">
@@ -12,24 +13,36 @@
     {% for question in latest_question_list %}
     <li><h4>{{ question.question_text }}</h4>
     <br><br>
-    <a href = "{% url 'polls:createchoice' question.id %}" class="btn-primary">CREATE CHOICES</a>
+    <button onclick="choicefunc('{{question.id}}')"  id="choicebutton" class="btn-primary" data-toggle="modal" data-target="#choiceModal">CREATE CHOICES</button>
+    <div class="modal fade" id="choiceModal" role="dialog">
+    </div>
     &nbsp;
-    <a href = "{% url 'polls:editpoll' question.id %}" class="btn-primary">EDIT POLL</a>
+    <button onclick="editpollfunc('{{question.id}}')"  id="pollbutton" class="btn-primary" data-toggle="modal" data-target="#pollModal">EDIT POLL</button>
+    <div class="modal fade" id="pollModal" role="dialog">
+    </div>
     &nbsp;
-    <a href = "{% url 'polls:deletepoll' question.id %}" class="btn-primary">DELETE POLL</a>
+    <a href = "{% url 'polls:deletepoll' question.id %}" onclick="return confirm('Are you sure you want to Delete?');" id="delpoll"  class="btn-primary">DELETE POLL</a>
+    &nbsp;
+    <a href="{% url 'polls:chart' question.id %}" class="btn-primary">RESULTS</a>
     <br><br><br>
     <ul>
         {% for choice in question.choice_set.all %}
         <li><h5>{{ choice.choice_text }}---&nbsp;{{choice.votes}} votes</h5> </li>
-        <a href = "{% url 'polls:editchoice' choice.id %}">EDIT</a>
+        <a href=# onclick="editchoicefunc('{{choice.id}}')"  id="choiceeditbutton" data-toggle="modal" data-target="#editchoiceModal">EDIT</a>
+        <div class="modal fade" id="editchoiceModal" role="dialog">
+        </div>
+        &nbsp;
+        <a href = "{% url 'polls:deletechoice' choice.id %}" onclick="return confirm('Are you sure you want to Delete?');" id="delchoice">DELETE</a>
         {% endfor %}
     </ul>
     {% endfor %}
 </ol>
+
 {% else %}
 <br><br>
 <p>No polls are available.</p>
 {% endif %}
+</div>
 </div>
 </div>
 {% endblock %}

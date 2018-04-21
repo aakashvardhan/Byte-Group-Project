@@ -1,15 +1,21 @@
-{% extends 'polls/dashboardlayout.html' %}
-{% block content %}
-<div class="container">
-<form method="POST" action ="{% url 'polls:editpoll' question.id %}" >
-        <div class="form-group">
-        {% csrf_token %}
-        <table>
-        {{ form.as_table }}
-        </table>
-        <br>
-        <button type="submit">EDIT</button>
+<div class="modal-dialog">
+        <div class="modal-content">
+             <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">CREATE POLLS</h4>
+                </div>
+             <div class="modal-body">
+                 <form method="POST" action ="{% url 'polls:editpoll' question.id %}" >
+                     {% csrf_token %}
+                     <table>
+                         {{ form.as_table }}
+                        </table>
+                        <br>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">EDIT</button>
+                        </form>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
         </div>
-        </form>
-</div>
-{% endblock %}

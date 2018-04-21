@@ -15,8 +15,6 @@ class PollChoiceForm(forms.Form):
     choice_text = forms.CharField(max_length=200)
 
 
-class SurveyForm(forms.ModelForm):
-	class Meta:
-		model = Survey
-		fields = ('title','modified','responses',)
-		exclude = ('username',)
+class SurveyForm(forms.Form):
+	title = forms.CharField(max_length=50)
+	modified = forms.DateTimeField(initial=datetime.datetime.now())
