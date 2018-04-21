@@ -2,7 +2,7 @@
    
 {% block content %}
 <div class="jumbotron">
-<button id="cbutton1" class="btn-primary" data-toggle="modal" data-target="#basicModal1" >CREATE SURVEY</button>
+<button id="cbutton1" class="btn btn-primary" data-toggle="modal" data-target="#basicModal1" >CREATE SURVEY</button>
 <div class="modal fade" id="basicModal1" role="dialog">
 </div>
 {% if survey_list %}
@@ -16,9 +16,9 @@
     	<h4>Modified: {{ survey.modified }}</h4>
     	<h4>Responses: {{ survey.responses }}</h4>
     <br><br>
-    <a href = "{% url 'polls:editsurvey' survey.id %}" class="btn-primary">EDIT Survey</a>
+    <a href = "{% url 'polls:editsurvey' survey.id %}" class="btn btn-primary">EDIT Survey</a>
     &nbsp;
-    <a href = "{% url 'polls:deletesurvey' survey.id %}" class="btn-primary">DELETE Survey</a>
+    <a href = "{% url 'polls:deletesurvey' survey.id %}" class="btn btn-primary">DELETE Survey</a>
     <br><br><br>
     {% endfor %}
 </ol>

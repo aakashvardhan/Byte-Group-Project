@@ -2,7 +2,7 @@
 {% block content %}
 <div id="maindiv">
 <div class="jumbotron">
-<button id="cbutton" class="btn-primary" data-toggle="modal" data-target="#basicModal" >CREATE POLLS</button>
+<button id="cbutton" class="btn btn-primary" data-toggle="modal" data-target="#basicModal" >CREATE POLLS</button>
 <div class="modal fade" id="basicModal" role="dialog">
 </div>
 {% if latest_question_list %}
@@ -13,17 +13,17 @@
     {% for question in latest_question_list %}
     <li><h4>{{ question.question_text }}</h4>
     <br><br>
-    <button onclick="choicefunc('{{question.id}}')"  id="choicebutton" class="btn-primary" data-toggle="modal" data-target="#choiceModal">CREATE CHOICES</button>
+    <button onclick="choicefunc('{{question.id}}')"  id="choicebutton" class="btn btn-primary" data-toggle="modal" data-target="#choiceModal">CREATE CHOICES</button>
     <div class="modal fade" id="choiceModal" role="dialog">
     </div>
     &nbsp;
-    <button onclick="editpollfunc('{{question.id}}')"  id="pollbutton" class="btn-primary" data-toggle="modal" data-target="#pollModal">EDIT POLL</button>
+    <button onclick="editpollfunc('{{question.id}}')"  id="pollbutton" class="btn btn-primary" data-toggle="modal" data-target="#pollModal">EDIT POLL</button>
     <div class="modal fade" id="pollModal" role="dialog">
     </div>
     &nbsp;
-    <a href = "{% url 'polls:deletepoll' question.id %}" onclick="return confirm('Are you sure you want to Delete?');" id="delpoll"  class="btn-primary">DELETE POLL</a>
+    <a href = "{% url 'polls:deletepoll' question.id %}" onclick="return confirm('Are you sure you want to Delete?');" id="delpoll"  class="btn btn-primary">DELETE POLL</a>
     &nbsp;
-    <a href="{% url 'polls:chart' question.id %}" class="btn-primary">RESULTS</a>
+    <a href="{% url 'polls:chart' question.id %}" class="btn btn-primary">RESULTS</a>
     <br><br><br>
     <ul>
         {% for choice in question.choice_set.all %}

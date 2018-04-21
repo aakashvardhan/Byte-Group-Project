@@ -1,5 +1,6 @@
 <nav class="navbar navbar-inverse">
   <div class="container">
+    {% if user.is_authenticated %}
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-menu" aria-expanded="false">
         <span class="sr-only">Toggle navigation</span>
@@ -11,16 +12,18 @@
     </div>
 
     <ul class="nav navbar-nav navbar-right">
-      <li><a href="{% url 'polls:logout' %}"><span class="glyphicon glyphicon-home"></span> Logout</a></li>
-      <li><a href="{% url 'polls:mypolls' %}"><span class="si-glyph-home-page
-"></span>My Polls</a></li>
-<li><a href="{% url 'polls:mysurvey' %}"><span class="si-glyph-home-page
-"></span>My Surveys</a></li>
+  <li><a href="{% url 'polls:mypolls' %}"><span class="si-glyph-home-page"></span>My Polls</a></li>
+<li><a href="{% url 'polls:mysurvey' %}"><span class="si-glyph-home-page"></span>My Surveys</a></li>
+<li><a href="{% url 'polls:logout' %}"><span class="glyphicon glyphicon-home"></span> {{ user.username }}</a></li>
     </ul>
+
 
     <div class="collapse navbar-collapse" id="main-menu">
     </div>
     <div class="collapse navbar-collapse" id="main-menu">
-          </div><!--/.nav-collapse -->
+          </div>
+          {% else %}
+<h3> You are not logged in </h3>
+{% endif %}<!--/.nav-collapse -->
   </div>
 </nav>
