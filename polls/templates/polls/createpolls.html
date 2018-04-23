@@ -8,8 +8,9 @@
                      <form method="POST" action ="{% url 'polls:createpolls' %}">
                              {% csrf_token %}
                              <table>
-                             {{ form.as_table }}
+                             {{ form.as_p }}
                              </table>
+
                  <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">CREATE</button>
                     </form>

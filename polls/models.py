@@ -45,5 +45,19 @@ class Survey(models.Model):
     def __str__(self):
         return self.title
 
+class Surveyquestion(models.Model):
+    title = models.ForeignKey(Survey,on_delete=models.CASCADE)
+    question = models.CharField(max_length=200)
+    username = models.ForeignKey(User,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.question
+
+class Surveyanswer(models.Model):
+    question = models.ForeignKey(Surveyquestion,on_delete=models.CASCADE)
+    answer = models.TextField()
+    username = models.ForeignKey(User,on_delete=models.CASCADE)
+
+
 
 
