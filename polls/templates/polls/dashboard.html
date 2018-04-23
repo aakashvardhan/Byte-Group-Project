@@ -1,7 +1,13 @@
 {% extends 'polls/dashboardlayout.html' %}
+{% load bootstrap4 %}
 {% block title %}Dashboard{% endblock %}
 {% load static %}
 <link href="Byte-Group-Project/polls/static/css/style.css" rel="stylesheet">
+<style>
+body {
+padding-top: 1em;
+}   
+</style>
 
 {% block content %}
 <div class="container">
@@ -16,7 +22,7 @@
 <h2 class="display-4">Discover Polls</h2>
 <br>
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-    <ul>
+    <ol>
     {% for question in latest_question_list %}
     <li>{{ question.question_text }}</li>
     <ul>
@@ -24,15 +30,17 @@
             <form action="{% url 'polls:vote' question.id %}"  method="post">
                     {% csrf_token %}
                     {% for choice in question.choice_set.all %}
+                    <div class="custom-control custom-radio">
                         <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />
                         <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br/>
                     {% endfor %}
                     <input type="submit" class="btn btn-primary" value="Vote">
+                    </div>
             </form>
     </ul>
     <br><br><br>
     {% endfor %}
-    </ul>
+    </ol>
 {% else %}
     <p>No polls are available.</p>
 {% endif %}

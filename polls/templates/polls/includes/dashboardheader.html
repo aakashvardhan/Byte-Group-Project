@@ -14,7 +14,16 @@
     <ul class="nav navbar-nav navbar-right">
   <li><a href="{% url 'polls:mypolls' %}"><span class="si-glyph-home-page"></span>My Polls</a></li>
 <li><a href="{% url 'polls:mysurvey' %}"><span class="si-glyph-home-page"></span>My Surveys</a></li>
-<li><a href="{% url 'polls:logout' %}"><span class="glyphicon glyphicon-home"></span> {{ user.username }}</a></li>
+<li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-home"></span>
+          {{ user.username }}
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{% url 'polls:change_password' %}">Change Password</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="{% url 'polls:logout' %}">Logout</a>
+        </div>
+      </li>
     </ul>
 
 

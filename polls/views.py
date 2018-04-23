@@ -18,6 +18,10 @@ from django.urls import reverse
 
 import requests
 
+from django.contrib.auth import update_session_auth_hash
+
+from django.contrib.auth.forms import PasswordChangeForm
+
 from django.conf import settings
 
 from django.contrib import messages
@@ -62,7 +66,7 @@ def log_in(request):
     context = { 'form' : form }
     return render(request,'polls/login.html', context)
 
-
+@login_required(login_url='/login')
 def log_out(request):
     logout(request)
     return redirect('polls:home')
@@ -110,6 +114,23 @@ def register(request):
     context = { 'form' : form }
     return render(request, 'polls/register.html', context)
 
+@login_required(login_url='/login')
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('polls:change_password')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'polls/change_password.html', {
+        'form': form
+    })
+
 def validate_username(request):
     username = request.GET.get('username', None)
     data = {
@@ -141,6 +162,7 @@ def dashboard(request):
     }
     return render(request, 'polls/dashboard.html',context)
 
+@login_required(login_url='/login')
 def vote(request,question_id):
     username = request.user
     latest_question_list = Question.objects.exclude(username = username)

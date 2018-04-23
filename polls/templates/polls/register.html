@@ -1,4 +1,6 @@
 {% extends 'polls/layout.html' %}
+{% load bootstrap4 %}
+{% block title %}Signup{% endblock %}
 
 {% block content %}
 <div class="jumbotron">
@@ -8,14 +10,16 @@
   <form method="POST">
     <div class="form-group">
     {% csrf_token %}
-    {{ form.as_p }}
+    {% bootstrap_form form %}
 
 
 <br>
     <script src='https://www.google.com/recaptcha/api.js'></script>
     <div class="g-recaptcha" data-sitekey="6LeM4lMUAAAAAHKHccmyRH2-r_S_oCH7dMcp9J3-"></div>
     <br>
+    {% buttons %}
     <button type="submit" class="btn btn-primary">Sign up</button>
+    {% endbuttons %}
     </div>
   </form>
 </div></div>

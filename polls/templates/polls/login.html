@@ -1,18 +1,25 @@
 {% extends 'polls/layout.html' %}
+{% load bootstrap4 %}
+  {% bootstrap_css %}
+
 {% block title %}Login{% endblock %}
 {% block content %}
 <div class="jumbotron">
 <div class="container">
+  {% bootstrap_messages %}
 {% if user == None %}
-Your username and password didn't match.
+{% bootstrap_alert content %}
+{% bootstrap_alert "Your username and password didn't match." alert_type='error' %}
 {% endif %}
   <h2>Login</h2>
   <br>
   <form method="POST" action ="{% url 'polls:login' %}" >
     <div class="form-group">
     {% csrf_token %}
-    {{ form.as_p }}
+    {% bootstrap_form form %}
+    {% buttons %}
     <button type="submit" class="btn btn-primary">Login</button>
+    {% endbuttons %}
     &nbsp;&nbsp;&nbsp;&nbsp;<a href= "{% url 'polls:register' %}">Not yet registered?Sign Up</a>
     </div>
   </form>

@@ -1,3 +1,4 @@
+{% load bootstrap4 %}
 <div class="modal-dialog">
             <div class="modal-content">
                  <div class="modal-header">
@@ -8,13 +9,14 @@
                      <form method="POST" action ="{% url 'polls:createpolls' %}">
                              {% csrf_token %}
                              <table>
-                             {{ form.as_p }}
+                             {% bootstrap_form form %}
                              </table>
 
                  <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">CREATE</button>
                     </form>
                     <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+
                     </div>
                 </div>
             </div>

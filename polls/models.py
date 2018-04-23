@@ -37,7 +37,7 @@ class Survey(models.Model):
     title = models.CharField(max_length=50)
     modified = models.DateTimeField('date modified')
     responses = models.IntegerField(default=0)
-    username = models.ForeignKey(User,default='',on_delete=models.CASCADE)
+    username = models.ForeignKey(User,null=True,on_delete=models.CASCADE)
 
     def was_modified_recently(self):
         return self.modified >= timezone.now() - datetime.timedelta(days=1)
@@ -57,6 +57,9 @@ class Surveyanswer(models.Model):
     question = models.ForeignKey(Surveyquestion,on_delete=models.CASCADE)
     answer = models.TextField()
     username = models.ForeignKey(User,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.answer
 
 
 

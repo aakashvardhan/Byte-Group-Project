@@ -1,4 +1,4 @@
-from django.urls import path,re_path
+from django.urls import path,re_path, include
 
 from . import views
 
@@ -8,10 +8,12 @@ urlpatterns = [
     path('',views.home, name='home'),
     path('login/',views.log_in, name='login'),
     path('logout/',views.log_out, name='logout'),
+    path('oauth/', include('social_django.urls', namespace='social')),
     path('dashboard/',views.dashboard, name='dashboard'),
     path('register/',views.register, name='register'),
     re_path(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
         views.activate, name='activate'),
+    path('password/',views.change_password, name='change_password'),
     path('dashboard/vote/<int:question_id>/', views.vote, name='vote'),
     path('dashboard/mypolls/',views.mypolls, name='mypolls'),
     path('dashboard/mysurvey/', views.mysurvey, name='mysurvey'),
