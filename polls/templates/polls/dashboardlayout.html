@@ -13,13 +13,6 @@
             });
         });
     </script>
-    <script>
-    $(document).ready(function(){
-        $("#cbutton1").click(function(){
-            $("#basicModal1").load("{% url 'polls:createsurvey' %}");
-            });
-        });
-    </script>
     <script src="{% static "polls/js/submitpoll.js" %}" type="text/javascript"></script>
     <script>
         function choicefunc(question_id){

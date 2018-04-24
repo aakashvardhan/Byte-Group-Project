@@ -1,0 +1,21 @@
+{% extends 'polls/surveyslayout.html' %}
+{% block content %}
+<div class="container">
+<br><br>
+{% if latest_survey_list %}
+<div class="jumbotron">
+<h3><u>DISCOVER SURVEYS</u></h3>
+<ol>
+        {% for survey in latest_survey_list %}
+        <li><h4>{{ survey.title }}</h4>
+        <button onclick="responsesurveyfunc('{{survey.id}}')" data-toggle="modal" data-target="#surveyresponseModal" class="btn btn-primary">FILL THE FORM</button>
+        <div class="modal" id="surveyresponseModal" role="dialog">
+        </div>
+        {% endfor %}
+</ol>
+{% else %}
+    <p>No surveys are available.</p>
+{% endif %}
+</div>
+</div>
+{% endblock %}

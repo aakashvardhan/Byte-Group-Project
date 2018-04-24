@@ -1,5 +1,7 @@
 from django.urls import path,re_path, include
 
+from django.contrib.auth import views as auth_views
+
 from . import views
 
 app_name = 'polls'
@@ -14,12 +16,18 @@ urlpatterns = [
     re_path(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
         views.activate, name='activate'),
     path('password/',views.change_password, name='change_password'),
+    path('accounts/password_reset/',views.password_reset,name='password_reset'),
+    path('accounts/password_reset/done/',views.password_reset_done,name='password_reset_done'),
+    path('accounts/reset/<uidb64>/<token>/',views.password_reset_confirm,name='password_reset_confirm'),
+    path('accounts/reset/done/',views.password_reset_complete,name='password_reset_complete'),
     path('dashboard/vote/<int:question_id>/', views.vote, name='vote'),
     path('dashboard/mypolls/',views.mypolls, name='mypolls'),
-    path('dashboard/mysurvey/', views.mysurvey, name='mysurvey'),
-    path('dashboard/createsurvey/', views.createsurvey, name='createsurvey'),
-    path('dashboard/deletesurvey/<int:survey_id>', views.deletesurvey, name='deletesurvey'),
-    path('dashboard/editsurvey/<int:survey_id>', views.editsurvey, name='editsurvey'),
+    path('dashboard/surveys/',views.surveys, name='surveys'),
+    path('dashboard/mysurveys',views.mysurveys, name='mysurveys'),
+    path('dashboard/mysurveys/createsurveys/<int:question_count>',views.createsurveys, name='createsurveys'),
+    path('dashboard/mysurveys/editsurvey/<int:title_id>',views.editsurvey, name='editsurvey'),
+    path('dashboard/mysurveys/deletesurvey/<int:title_id>',views.deletesurvey, name='deletesurvey'),
+    path('dashboard/surveys/surveyresponse/<int:title_id>',views.surveyresponse, name='surveyresponse'),
     path('dashboard/createpolls/',views.createpolls, name='createpolls'),
     path('dashboard/createchoice/<int:question_id>',views.createchoice, name='createchoice'),
     path('dashboard/editpoll/<int:question_id>',views.editpoll, name='editpoll'),

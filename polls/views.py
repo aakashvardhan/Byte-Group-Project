@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect, get_list_or_40
 
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 
-from .models import Question, Choice, Votes, Survey
+from .models import Question, Choice, Votes, Surveytitle
 
 from django.contrib.auth.forms import UserCreationForm
 
@@ -10,11 +10,13 @@ from django.contrib.auth import login, authenticate,logout
 
 from django.contrib.auth.decorators import login_required
 
-from .forms import UserLoginForm, PollForm, PollChoiceForm, SurveyForm, SignupForm
+from .forms import UserLoginForm, PollForm, PollChoiceForm, SurveyForm, SignupForm,SurveyResponseForm
 
 from django.contrib.auth.models import User
 
 from django.urls import reverse
+
+from django.forms import formset_factory,BaseFormSet
 
 import requests
 
@@ -38,11 +40,25 @@ from .tokens import account_activation_token
 
 from django.core.mail import EmailMessage
 
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 def home(request):
     if request.user.is_authenticated:
         return redirect('polls:dashboard')
     
     return render(request, 'polls/home.html')
+
+def password_reset(request):
+    return render(request, 'registration/password_reset_form.html')
+
+def password_reset_done(request):
+    return render(request, 'registration/password_reset_done.html')
+
+def password_reset_confirm(request):
+    return render(request, 'registration/password_reset_confirm.html')
+
+def password_reset_complete(request):
+    return render(request, 'registration/password_reset_complete.html')
 
 
 def log_in(request):
@@ -138,7 +154,8 @@ def validate_username(request):
     }
     return JsonResponse(data)
 
-def activate(request, uidb64, token):
+def activate(request, uidb64, token, 
+backend='django.contrib.auth.backends.ModelBackend'):
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
@@ -147,7 +164,8 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
-        login(request, user)
+        login(request, user, 
+backend='django.contrib.auth.backends.ModelBackend')
         return redirect('polls:dashboard')
         return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
     else:
@@ -157,10 +175,22 @@ def activate(request, uidb64, token):
 def dashboard(request):
     username = request.user
     latest_question_list = Question.objects.exclude(username = username)
+
     context = {
         'latest_question_list': latest_question_list,
     }
     return render(request, 'polls/dashboard.html',context)
+
+    # username = request.user
+    # latest_question_list = Question.objects.exclude(username=username)
+    # paginator = Paginator(latest_question_list,5) # 5 per page
+    # page = request.GET.get('page')
+    # questions = paginator.get_page(page)
+    # context = {
+    #     'questions':questions
+    # }
+    # return render(request, 'polls/dashboard.html',context)
+
 
 @login_required(login_url='/login')
 def vote(request,question_id):
@@ -201,58 +231,110 @@ def mypolls(request):
     return render(request, 'polls/mypolls.html',context)
 
 @login_required(login_url='/login')
-def mysurvey(request):
+def surveys(request):
     username = request.user
-    survey_list = Survey.objects.filter(username=username)
+    latest_survey_list = Surveytitle.objects.exclude(username = username)
     context = {
-        'survey_list': survey_list,
+        'latest_survey_list': latest_survey_list,
     }
-    return render(request, 'polls/mysurvey.html',context)
+    return render(request, 'polls/surveys.html',context)
 
-
-
-
-    
 @login_required(login_url='/login')
-def createsurvey(request):
-    if request.method == 'POST':
-        form = SurveyForm(request.POST)
-        if form.is_valid():
-            username = request.user
-            survey = username.survey_set.create(title=request.POST['title'],modified=request.POST['modified'])
-            username.survey_set.update(responses =0)
-            return redirect('polls:mysurvey')
-    else:
-        form = SurveyForm()
+def mysurveys(request):
     username = request.user
-    survey_list = Survey.objects.filter(username=username)
-    context = {'form':form, 'survey_list':survey_list}
-    return render(request,'polls/createsurvey.html', context)
+    latest_survey_list = Surveytitle.objects.filter(username = username)
+    context = {
+        'latest_survey_list': latest_survey_list,
+    }
+    return render(request, 'polls/mysurveys.html',context)
 
 @login_required(login_url='/login')
-def editsurvey(request,survey_id):
+def createsurveys(request,question_count):
+    surveyformset = formset_factory(SurveyForm,extra=question_count)
     if request.method == 'POST':
-        form = SurveyForm(request.POST)
-        if form.is_valid():
-            survey = get_object_or_404(Survey,pk=survey_id)
-            survey.title = request.POST['title']
-            survey.modified = request.POST['modified']
-            survey.save()
-            # question.survey_set.update(votes =0)
-            return redirect('polls:mysurvey')
+        formset= surveyformset(request.POST)
+        if formset.is_valid():
+            i=0
+            username = request.user
+            survey = username.surveytitle_set.create(title = request.POST['title'],modified = request.POST['pub_date'])
+            title = get_object_or_404(Surveytitle,title = request.POST['title'])
+            for form in formset:
+                questions = title.surveyquestion_set.create(question = request.POST['form-%d-question' % i],username = username)
+                i=i+1
+            return redirect('polls:mysurveys')
+        else:
+            return render(request,'polls/createsurveys.html', {"formset" : formset,"question_count" : question_count})
     else:
-        survey = get_object_or_404(Survey,pk=survey_id)
-        data={'title' : survey.title,'modified' : survey.modified}
-        form = SurveyForm(data)
+        formset = surveyformset()
+    context = { 'formset' : formset,"question_count" : question_count}
+    return render(request,'polls/createsurveys.html', context)
 
-    context = { 'form' : form, 'survey' : survey }
+@login_required(login_url='/login')
+def editsurvey(request,title_id):
+    title = get_object_or_404(Surveytitle,pk=title_id)
+    questions = title.surveyquestion_set.all()
+    ordquestions = questions.order_by('id')
+    initialquestiondata = ordquestions.values('question')
+    surveyformset = formset_factory(SurveyForm,extra=0)
+    if request.method == 'POST':
+        formset = surveyformset(request.POST,initial=initialquestiondata)
+        if formset.is_valid():
+            if formset.has_changed():
+                for i,question in zip(range(len(formset)),ordquestions):
+                        surveyquestion = get_object_or_404(Surveyquestion,pk=question.id)
+                        surveyquestion.question = request.POST['form-%d-question' % i]
+                        surveyquestion.save()
+                title.modified = request.POST['pub_date']
+                title.save()
+            else:
+                print("No Change")
+            return redirect('polls:mysurveys')
+    else:
+        formset = surveyformset(initial=initialquestiondata)
+    context = { 'formset' : formset,'title_id' : title_id,'title' : title}
     return render(request,'polls/editsurvey.html', context)
 
 @login_required(login_url='/login')
-def deletesurvey(request,survey_id):
-    question = get_object_or_404(Survey,pk=survey_id)
-    question.delete()
-    return redirect('polls:mysurvey')   
+def deletesurvey(request,title_id):
+    title = get_object_or_404(Surveytitle,pk=title_id)
+    title.delete()
+    return redirect('polls:mysurveys')
+
+@login_required(login_url='/login')
+def surveyresponse(request,title_id):
+    username = request.user
+    title = get_object_or_404(Surveytitle,pk=title_id)
+    questions = title.surveyquestion_set.all()
+    ordquestions = questions.order_by('id')
+    initialquestiondata = ordquestions.values('question')
+    answers = title.surveyanswer_set.filter(username=username)
+    ordanswers = answers.order_by('id')
+    initialanswerdata = ordanswers.values('answer')
+    data=[]
+    if len(initialanswerdata) != 0:
+        for i,f in zip(initialquestiondata,initialanswerdata):
+            z=dict(list(i.items()) + list(f.items()))
+            data.append(z)
+    else:
+        for i in initialquestiondata:
+            data.append(i)
+    surveyformset = formset_factory(SurveyResponseForm,extra=0)
+    if request.method == 'POST':
+        formset = surveyformset(request.POST,initial=data)
+        if formset.is_valid():
+            if formset.has_changed():
+                for i,question in zip(range(len(formset)),ordquestions):
+                    surveyquestion = get_object_or_404(Surveyquestion,pk=question.id)
+                    question.surveyanswer_set.create(title=question.title,answer=request.POST['form-%d-answer' % i],username = username)
+                title.responses = title.responses + 1
+                title.save()
+            else:
+                print("No Change")
+            return redirect('polls:surveys')
+    else:
+        formset = surveyformset(initial=data)
+    context = { 'formset' : formset,'title_id' : title_id,'title' : title}
+    return render(request,'polls/surveyresponse.html', context)  
 
 @login_required(login_url='/login')
 def createpolls(request):

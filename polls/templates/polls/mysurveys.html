@@ -1,0 +1,31 @@
+{% extends 'polls/surveyslayout.html' %}
+{% block content %}
+<div class="container">
+<button id="surveybutton" class="btn-primary" data-toggle="modal" data-target="#surveyModal" >CREATE SURVEYS</button>
+<div class="modal fade" id="surveyModal" role="dialog">
+</div>
+<br><br>
+{% if latest_survey_list %}
+<div class="jumbotron">
+<h3><u>MY SURVEYS</u></h3>
+<ol>
+        {% for survey in latest_survey_list %}
+        <li><h4>{{ survey.title }}</h4>
+        <a href=# onclick="editsurveyfunc('{{survey.id}}')" data-toggle="modal" data-target="#surveyeditModal">EDIT</a>
+        <div class="modal" id="surveyeditModal" role="dialog">
+        </div>
+        &nbsp;&nbsp;
+        <a href="{% url 'polls:deletesurvey' survey.id %}" onclick="return confirm('Are you sure you want to Delete?');">DELETE</a>
+        <br><br>
+        <ul>
+            <li>RESPONSES : {{ survey.responses }}</li>
+            <li>MODIFIED ON : {{ survey.modified }}</li>
+        </ul>
+        {% endfor %}
+</ol>
+{% else %}
+<p>No surveys are available.</p>
+{% endif %}
+</div>
+</div>
+{% endblock %}
