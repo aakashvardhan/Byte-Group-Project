@@ -1,0 +1,25 @@
+{% load bootstrap4 %}
+<div class="modal-dialog">
+        <div class="modal-content">
+             <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">RESPONSE FORM</h4>
+            </div>
+             <div class="modal-body">
+                <form id="showform" >
+                    {% csrf_token %}
+                    {{ formset.management_form }}
+                    <label for="id_title">Title:</label>
+                    <input type="text" name="title" required="required" readonly="readonly" value="{{ title.title }}" class="form-control" placeholder="Title" maxlength="100" id="id_title">
+                    <br>
+                    <input type="hidden" name="pub_date" value="{{ date }}" required="required" class="form-control" placeholder="Publication Date" id="id_pub_date">
+                    {% for form in formset %}
+                    {% bootstrap_form form %}
+                    {% endfor %}
+                    <div class="modal-footer">
+                </form>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

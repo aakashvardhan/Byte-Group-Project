@@ -31,6 +31,13 @@
          $("#surveyresponseModal").load(url);
         }
     </script>
+     <script>
+    function showresponsefunc(username,title_id){
+        var url = "{% url 'polls:showresponse' 1234 2345 %}".replace(/1234/,username);
+        var fullurl = url.replace(/2345/,title_id.toString())
+        $("#showresponseModal").load(fullurl);
+        }
+    </script>
     <style>
             .btn-primary {
                 background: #4285f4;

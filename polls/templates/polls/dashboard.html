@@ -21,10 +21,14 @@ padding-top: 1em;
 {% if latest_question_list %}
 <h2 class="display-4">Discover Polls</h2>
 <br>
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% if selected_choice %}<h1>You have voted for&nbsp;&nbsp;<u>{{selected_choice.choice_text}}</u></h1>{% endif %} 
+{% if error_message %}<p style="color:red"><strong>{{ error_message }}</strong></p>{% endif %}
     <ol>
     {% for question in questions.object_list %}
     <li>{{ question.question_text }}</li>
+    <br>
+    <a href="{% url 'polls:chart' question.id %}" class="btn-primary">CURRENT STATS</a>
+    <br><br><br>
     <ul>
         
             <form action="{% url 'polls:vote' question.id %}"  method="post">

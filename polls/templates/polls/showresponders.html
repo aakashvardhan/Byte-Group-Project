@@ -1,0 +1,21 @@
+{% extends 'polls/surveyslayout.html' %}
+{% block content %}
+<div class="container">
+{% if usernames %}
+<div class="jumbotron">
+<h3><u>RESPONDERS</u></h3>
+<br>
+<ol>
+    {% for username in usernames %}
+    <li><strong>{{ username }}</strong>&nbsp;&nbsp;has filled the survey form &nbsp;&nbsp;
+    <button class="btn btn-primary" onclick="showresponsefunc('{{username}}','{{title.id}}')" data-toggle="modal" data-target="#showresponseModal">VIEW</button>
+    <br><br></li>
+    <div class="modal fade" id="showresponseModal" role="dialog">
+    </div>
+    {% endfor %}
+</ol>
+{% else %}
+<p>No Responses Yet....</p>
+{% endif %}
+</div>
+{% endblock %}
