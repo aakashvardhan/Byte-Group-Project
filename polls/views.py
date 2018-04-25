@@ -182,7 +182,8 @@ def dashboard(request):
     # return render(request, 'polls/dashboard.html',context)
 
     username = request.user
-    latest_question_list = Question.objects.all().exclude(username=username)
+    question_list = Question.objects.all().exclude(username=username)
+    latest_question_list = question_list.order_by('id')
     paginator = Paginator(latest_question_list,5) # 5 per page
     page = request.GET.get('page')
     questions = paginator.get_page(page)
@@ -196,7 +197,8 @@ def dashboard(request):
 @login_required(login_url='/login')
 def vote(request,question_id):
     username = request.user
-    latest_question_list = Question.objects.all().exclude(username = username)
+    question_list = Question.objects.all().exclude(username = username)
+    latest_question_list = question_list.order_by('id')
     paginator = Paginator(latest_question_list,5) # 5 per page
     page = request.GET.get('page')
     questions = paginator.get_page(page)
