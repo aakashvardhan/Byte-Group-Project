@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect, get_list_or_40
 
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 
-from .models import Question, Choice, Votes, Surveytitle
+from .models import Question, Choice, Votes, Surveytitle, Surveyquestion, Surveyanswer
 
 from django.contrib.auth.forms import UserCreationForm
 
@@ -173,29 +173,33 @@ backend='django.contrib.auth.backends.ModelBackend')
 
 @login_required(login_url='/login')
 def dashboard(request):
-    username = request.user
-    latest_question_list = Question.objects.exclude(username = username)
-
-    context = {
-        'latest_question_list': latest_question_list,
-    }
-    return render(request, 'polls/dashboard.html',context)
-
     # username = request.user
-    # latest_question_list = Question.objects.exclude(username=username)
-    # paginator = Paginator(latest_question_list,5) # 5 per page
-    # page = request.GET.get('page')
-    # questions = paginator.get_page(page)
+    # latest_question_list = Question.objects.exclude(username = username)
+
     # context = {
-    #     'questions':questions
+    #     'latest_question_list': latest_question_list,
     # }
     # return render(request, 'polls/dashboard.html',context)
+
+    username = request.user
+    latest_question_list = Question.objects.all().exclude(username=username)
+    paginator = Paginator(latest_question_list,5) # 5 per page
+    page = request.GET.get('page')
+    questions = paginator.get_page(page)
+    context = {
+        'questions':questions,
+        'latest_question_list':latest_question_list
+    }
+    return render(request, 'polls/dashboard.html',context)
 
 
 @login_required(login_url='/login')
 def vote(request,question_id):
     username = request.user
-    latest_question_list = Question.objects.exclude(username = username)
+    latest_question_list = Question.objects.all().exclude(username = username)
+    paginator = Paginator(latest_question_list,5) # 5 per page
+    page = request.GET.get('page')
+    questions = paginator.get_page(page)
     question = get_object_or_404(Question, pk=question_id)
     try:
         voted_question = Votes.objects.get(username = username,question_text = question)
@@ -206,6 +210,7 @@ def vote(request,question_id):
     except (KeyError, Choice.DoesNotExist):
         # Redisplay the question voting form.
         return render(request, 'polls/dashboard.html', {
+            'questions':questions,
             'latest_question_list': latest_question_list,
             'error_message': "You didn't select a choice.",
         })
@@ -218,6 +223,7 @@ def vote(request,question_id):
             return render(request, 'polls/vote.html',{'choice' : selected_choice})
         else:
             return render(request, 'polls/dashboard.html', {
+                'questions':questions,
                 'latest_question_list': latest_question_list,
                 'error_message': "You cant vote twice",
                 })

@@ -4,11 +4,11 @@
 <br><br>
 {% if latest_survey_list %}
 <div class="jumbotron">
-<h3><u>DISCOVER SURVEYS</u></h3>
+<h3 class="display-4">Discover Surveys</h3>
 <ol>
         {% for survey in latest_survey_list %}
         <li><h4>{{ survey.title }}</h4>
-        <button onclick="responsesurveyfunc('{{survey.id}}')" data-toggle="modal" data-target="#surveyresponseModal" class="btn btn-primary">FILL THE FORM</button>
+        <button onclick="responsesurveyfunc('{{survey.id}}')" data-toggle="modal" data-target="#surveyresponseModal" class="btn btn-primary">Fill the form</button>
         <div class="modal" id="surveyresponseModal" role="dialog">
         </div>
         {% endfor %}

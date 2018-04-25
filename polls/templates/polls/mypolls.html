@@ -2,37 +2,37 @@
 {% block content %}
 <div id="maindiv">
 <div class="jumbotron">
-<button id="cbutton" class="btn btn-primary" data-toggle="modal" data-target="#basicModal" >CREATE POLLS</button>
+<button id="cbutton" class="btn btn-primary" data-toggle="modal" data-target="#basicModal" >Create Polls</button>
 <div class="modal fade" id="basicModal" role="dialog">
 </div>
 {% if latest_question_list %}
 <br><br>
-<h3 class="display-4">MY POLLS</h3>
+<h3 class="display-4">My Polls</h3>
 <div class="container">
 <ol>
     {% for question in latest_question_list %}
     <li><h4>{{ question.question_text }}</h4>
     <br><br>
-    <button onclick="choicefunc('{{question.id}}')"  id="choicebutton" class="btn btn-primary" data-toggle="modal" data-target="#choiceModal">CREATE CHOICES</button>
+    <button onclick="choicefunc('{{question.id}}')"  id="choicebutton" class="btn btn-primary" data-toggle="modal" data-target="#choiceModal">Create Choice</button>
     <div class="modal fade" id="choiceModal" role="dialog">
     </div>
     &nbsp;
-    <button onclick="editpollfunc('{{question.id}}')"  id="pollbutton" class="btn btn-primary" data-toggle="modal" data-target="#pollModal">EDIT POLL</button>
+    <button onclick="editpollfunc('{{question.id}}')"  id="pollbutton" class="btn btn-primary" data-toggle="modal" data-target="#pollModal">Edit Poll</button>
     <div class="modal fade" id="pollModal" role="dialog">
     </div>
     &nbsp;
-    <a href = "{% url 'polls:deletepoll' question.id %}" onclick="return confirm('Are you sure you want to Delete?');" id="delpoll"  class="btn btn-primary">DELETE POLL</a>
+    <a href = "{% url 'polls:deletepoll' question.id %}" onclick="return confirm('Are you sure you want to Delete?');" id="delpoll"  class="btn btn-primary">Delete Poll</a>
     &nbsp;
-    <a href="{% url 'polls:chart' question.id %}" class="btn btn-primary">RESULTS</a>
+    <a href="{% url 'polls:chart' question.id %}" class="btn btn-primary">Results</a>
     <br><br><br>
     <ul>
         {% for choice in question.choice_set.all %}
         <li><h5>{{ choice.choice_text }}---&nbsp;{{choice.votes}} votes</h5> </li>
-        <a href=# onclick="editchoicefunc('{{choice.id}}')"  id="choiceeditbutton" data-toggle="modal" data-target="#editchoiceModal">EDIT</a>
+        <a href=# onclick="editchoicefunc('{{choice.id}}')"  id="choiceeditbutton" data-toggle="modal" data-target="#editchoiceModal">Edit</a>
         <div class="modal fade" id="editchoiceModal" role="dialog">
         </div>
         &nbsp;
-        <a href = "{% url 'polls:deletechoice' choice.id %}" onclick="return confirm('Are you sure you want to Delete?');" id="delchoice">DELETE</a>
+        <a href = "{% url 'polls:deletechoice' choice.id %}" onclick="return confirm('Are you sure you want to Delete?');" id="delchoice">Delete</a>
         {% endfor %}
     </ul>
     {% endfor %}

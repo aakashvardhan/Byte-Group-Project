@@ -6,7 +6,6 @@
 {% block content %}
 <div class="jumbotron">
 <div class="container">
-  {% bootstrap_messages %}
 {% if user == None %}
 {% bootstrap_alert content %}
 {% bootstrap_alert "Your username and password didn't match." alert_type='error' %}
@@ -20,7 +19,7 @@
     {% buttons %}
     <button type="submit" class="btn btn-primary">Login</button>
     {% endbuttons %}
-    &nbsp;&nbsp;&nbsp;&nbsp;<a href= "{% url 'polls:password_reset' %}">Forgot your password?</a>
+    <a href= "{% url 'polls:password_reset' %}">Forgot your password?</a>
     </div>
   </form>
 </div></div>

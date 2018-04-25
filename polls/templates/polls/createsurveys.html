@@ -3,7 +3,7 @@
         <div class="modal-content">
              <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">CREATE SURVEY</h4>
+                    <h4 class="modal-title">Create Survey</h4>
             </div>
              <div class="modal-body">
                 <form id="sform" method="POST" action="{% url 'polls:createsurveys' question_count %}">
@@ -19,7 +19,7 @@
                     {% bootstrap_form form %}
                     {% endfor %}
                     <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">CREATE</button>
+                    <button type="submit" class="btn btn-primary">Create</button>
                 </form>
                 <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
             </div>

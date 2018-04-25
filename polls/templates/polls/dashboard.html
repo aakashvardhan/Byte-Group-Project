@@ -23,7 +23,7 @@ padding-top: 1em;
 <br>
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
     <ol>
-    {% for question in latest_question_list %}
+    {% for question in questions.object_list %}
     <li>{{ question.question_text }}</li>
     <ul>
         
@@ -37,10 +37,28 @@ padding-top: 1em;
                     <input type="submit" class="btn btn-primary" value="Vote">
                     </div>
                     
+                    
             </form>
     </ul>
     <br><br><br>
     {% endfor %}
+    <div class="pagination">
+    <span class="step-links">
+        {% if questions.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ questions.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ questions.number }} of {{ questions.paginator.num_pages }}.
+        </span>
+
+        {% if questions.has_next %}
+            <a href="?page={{ questions.next_page_number }}">next</a>
+            <a href="?page={{ questions.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
     </ol>
 {% else %}
     <p>No polls are available.</p>
