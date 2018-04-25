@@ -8,9 +8,13 @@
     $(document).ready(function(){
         $("#surveybutton").click(function(){
             var question_count = prompt("How many Questions do you need in your Survey Form?");
-            if (question_count != null || question_count != ""){
+            if (question_count == ""){
+                location.reload();
+            } else if(question_count) {
                 var url = "{% url 'polls:createsurveys' 1234 %}".replace(/1234/, question_count.toString());
                 $("#surveyModal").load(url);
+            } else {
+                location.reload();
             }
          });
         });
