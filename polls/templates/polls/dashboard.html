@@ -34,6 +34,7 @@ padding-top: 1em;
                         <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />
                         <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br/>
                     {% endfor %}
+                    <br>
                     <input type="submit" class="btn btn-primary" value="Vote">
                     </div>
                     
@@ -42,23 +43,22 @@ padding-top: 1em;
     </ul>
     <br><br><br>
     {% endfor %}
-    <div class="pagination">
-    <span class="step-links">
+    <nav aria-label="Dashboard">
+    <ul class="pagination">
         {% if questions.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ questions.previous_page_number }}">previous</a>
+            <li class="page-item"><a class="page-link" href="?page=1">&laquo; first</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ questions.previous_page_number }}">previous</a></li>
         {% endif %}
-
-        <span class="current">
-            Page {{ questions.number }} of {{ questions.paginator.num_pages }}.
-        </span>
+       
+            <li class="page-item active"><a class="page-link" href="#">Page {{ questions.number }} of {{ questions.paginator.num_pages }}.</a></li>
+        
 
         {% if questions.has_next %}
-            <a href="?page={{ questions.next_page_number }}">next</a>
-            <a href="?page={{ questions.paginator.num_pages }}">last &raquo;</a>
+            <li class="page-item"><a class="page-link" href="?page={{ questions.next_page_number }}">next</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ questions.paginator.num_pages }}">last &raquo;</a></li>
         {% endif %}
-    </span>
-</div>
+</ul>
+</nav>
     </ol>
 {% else %}
     <p>No polls are available.</p>
