@@ -1,10 +1,12 @@
 {% extends 'polls/layout.html' %}
 {% block content %}
+{% load static %}
 <div class="container">
         <br>
         <div class="jumbotron">
     <h2>Welcome!</h2>
-    <h3>Please click on Login to continue.</h3>
+    <br><br>
+    <img src="{% static 'polls/img/polls.jpg' %}" alt="home image" class="center" />
 </div>
 </div>
 {% endblock %}

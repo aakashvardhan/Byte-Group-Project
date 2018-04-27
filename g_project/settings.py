@@ -33,6 +33,9 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'aakash.django@gmail.com'
 EMAIL_HOST_PASSWORD = 'mai7ka8a'
 EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'Polls and Survey Team <noreply@example.com>'
+
 
 # Application definition
 
@@ -144,8 +147,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-LOGIN_URL = 'login'
-LOGOUT_URL = 'logout'
-LOGIN_REDIRECT_URL = 'dashboard'
+LOGIN_URL = 'polls:login'
+LOGOUT_URL = 'polls:logout'
+LOGIN_REDIRECT_URL = 'polls:dashboard'
+
+
 
 

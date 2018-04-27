@@ -50,17 +50,6 @@ def home(request):
     
     return render(request, 'polls/home.html')
 
-def password_reset(request):
-    return render(request, 'registration/password_reset_form.html')
-
-def password_reset_done(request):
-    return render(request, 'registration/password_reset_done.html')
-
-def password_reset_confirm(request):
-    return render(request, 'registration/password_reset_confirm.html')
-
-def password_reset_complete(request):
-    return render(request, 'registration/password_reset_complete.html')
 
 
 def log_in(request):
@@ -149,12 +138,6 @@ def change_password(request):
         'form': form
     })
 
-def validate_username(request):
-    username = request.GET.get('username', None)
-    data = {
-        'is_taken': User.objects.filter(username__iexact=username).exists()
-    }
-    return JsonResponse(data)
 
 def activate(request, uidb64, token, 
 backend='django.contrib.auth.backends.ModelBackend'):
@@ -168,8 +151,8 @@ backend='django.contrib.auth.backends.ModelBackend'):
         user.save()
         login(request, user, 
 backend='django.contrib.auth.backends.ModelBackend')
+        messages.success(request, 'Thank you for your email confirmation. Now you have logged In')
         return redirect('polls:dashboard')
-        return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
     else:
         return HttpResponse('Activation link is invalid!')
 
@@ -294,6 +277,7 @@ def editsurvey(request,title_id):
                         surveyquestion = get_object_or_404(Surveyquestion,pk=question.id)
                         surveyquestion.question = request.POST['form-%d-question' % i]
                         surveyquestion.save()
+                title.title = request.POST['title']
                 title.modified = request.POST['pub_date']
                 title.save()
             else:

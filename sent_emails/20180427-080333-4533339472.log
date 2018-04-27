@@ -1,0 +1,22 @@
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Subject: TestSite password reset
+From: Polls and Survey Team <noreply@example.com>
+To: vardhan.aakash1@gmail.com
+Date: Fri, 27 Apr 2018 08:03:33 -0000
+Message-ID: <152481621350.1755.15214065644803581952@aakashs-mbp.home>
+
+
+To initiate the password reset process for your aakashvardhan TestSite Account,
+click the link below:
+
+http://127.0.0.1:8000/accounts/reset/MQ/4vp-b33c055d9053dd2be986/
+
+If clicking the link above doesn't work, please copy and paste the URL in a new browser
+window instead.
+
+Sincerely,
+Polls and Survey Team
+
+-------------------------------------------------------------------------------
