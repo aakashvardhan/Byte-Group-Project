@@ -2,12 +2,7 @@
 {% load bootstrap4 %}
 {% block title %}Dashboard{% endblock %}
 {% load static %}
-<link href="Byte-Group-Project/polls/static/css/style.css" rel="stylesheet">
-<style>
-body {
-padding-top: 1em;
-}   
-</style>
+
 
 {% block content %}
 <div class="container">
@@ -18,10 +13,17 @@ padding-top: 1em;
 <h3> You are not logged in </h3>
 {% endif %}
 <div class="jumbotron">
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 {% if latest_question_list %}
 <h2 class="display-4">Discover Polls</h2>
 <br>
-{% if selected_choice %}<h1>You have voted for&nbsp;&nbsp;<u>{{selected_choice.choice_text}}</u></h1>{% endif %} 
+{% if selected_choice %}<h3>You have voted for <strong>{{selected_choice.choice_text}}</strong></h3>{% endif %} 
 {% if error_message %}<p style="color:red"><strong>{{ error_message }}</strong></p>{% endif %}
     <ol>
     {% for question in questions.object_list %}
@@ -31,7 +33,7 @@ padding-top: 1em;
     <br><br><br>
     <ul>
         
-            <form action="{% url 'polls:vote' question.id %}"  method="post">
+            <form id="voteform" action="{% url 'polls:vote' question.id %}"  method="post">
                     {% csrf_token %}
                     {% for choice in question.choice_set.all %}
                     <div class="custom-control custom-radio">

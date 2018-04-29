@@ -4,8 +4,11 @@
 
 {% block title %}Login{% endblock %}
 {% block content %}
-<div class="jumbotron">
+<body style="background-color:#333;">
 <div class="container">
+  <br><br>
+<div class="jumbotron">
+
 {% if user == None %}
 {% bootstrap_alert content %}
 {% bootstrap_alert "Your username and password didn't match." alert_type='error' %}

@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '*&)88#@t2*u_h7vndt=u6=$blq2*eo&4%+(gu!%!sps-9)*l6x'
 GOOGLE_RECAPTCHA_SECRET_KEY = '6LeM4lMUAAAAACGUC0Gu1RU2B5a7UgUsNasG1OLQ'
-
+GOOGLE_MAPS_API_KEY = 'AIzaSyABHV9qHpwtfrbEeejfPXrtqpPRD4ePFQ8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -50,6 +50,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'widget_tweaks',
     'bootstrap4',
+    'django_otp',
+    'django_otp.plugins.otp_static',
+    'django_otp.plugins.otp_totp',
+    'two_factor',
+    'otp_yubikey',
 
 ]
 
@@ -61,6 +66,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django_otp.middleware.OTPMiddleware',
 ]
 
 ROOT_URLCONF = 'g_project.urls'
@@ -142,9 +149,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
+
 STATIC_URL = '/static/'
 
-LOGIN_URL = 'polls:login'
+LOGIN_URL = 'two_factor:login'
 LOGOUT_URL = 'polls:logout'
 LOGIN_REDIRECT_URL = 'polls:dashboard'
 

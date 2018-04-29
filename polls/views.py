@@ -44,6 +44,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from datetime import datetime
 
+from django_otp.decorators import otp_required
 def home(request):
     if request.user.is_authenticated:
         return redirect('polls:dashboard')

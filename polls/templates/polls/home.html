@@ -1,11 +1,42 @@
 {% extends 'polls/layout.html' %}
 {% block content %}
 {% load static %}
-<div class="container">
-        <div class="jumbotron">
-    <h2>Welcome!</h2>
-    </div>
-    <img src="{% static 'polls/img/polls.jpg' %}" alt="home image" class="center"/>
-
+<body style="background-color:#474e5d;">
+	<style>
+h1 {
+    color: white;
+    text-align: center;
+}
+p {
+    color: white;
+    text-align: center;
+} 
+.bg-1 { 
+       background-color: #1abc9c; /* Green */
+        color: #ffffff;
+    }
+    .bg-2 { 
+      background-color: #474e5d; /* Dark Blue */
+      color: #ffffff;
+  }
+.container-fluid {
+    padding-top: 70px;
+    padding-bottom: 70px;
+}    
+</style>
+<div class="container-fluid bg-1 text-center">
+        <h1 class="cover-heading">Welcome!</h1>
+        <p class="lead">Let us help you make smarter decisions today.</p>
+        <p class="lead">
+          <a href="{% url 'polls:register' %}" class="btn btn-primary">Start today!</a>
+        </p>
+  </div>
+  <div class="container-fluid bg-2 text-center">
+  <h3>Already Signed Up?</h3>
+  <p class="lead">
+          <a href="{% url 'polls:login' %}" class="btn btn-primary">Click here!</a>
+        </p>
 </div>
+
+
 {% endblock %}
