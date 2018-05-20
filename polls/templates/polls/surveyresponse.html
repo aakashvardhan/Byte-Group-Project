@@ -10,9 +10,9 @@
                     {% csrf_token %}
                     {{ formset.management_form }}
                     <label for="id_title">Title:</label>
-                    <input type="text" name="title" required="required" readonly="readonly" value="{{ title.title }}" maxlength="100" id="id_title">
+                    <input type="text" name="title" class="form-control" placeholder="Title" required="required" readonly="readonly" value="{{ title.title }}" maxlength="100" id="id_title">
                     <br><br>
-                    <input type="hidden" name="pub_date" value="2018-04-22 17:41:08" required="required" id="id_pub_date">
+                    <input type="hidden" name="pub_date" value="{{ date }}" required="required" id="id_pub_date">
                     {% for form in formset %}
                     {% bootstrap_form form %}
                     {% endfor %}

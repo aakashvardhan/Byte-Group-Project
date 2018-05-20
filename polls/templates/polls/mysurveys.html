@@ -2,13 +2,12 @@
 {% block title %}Surveys{% endblock %}
 {% block content %}
 <div class="container">
-
+<button id="surveybutton" class="btn btn-primary" data-toggle="modal" data-target="#surveyModal" >Create Survey</button>
 <div class="modal fade" id="surveyModal" role="dialog">
 </div>
 <br><br>
-{% if latest_survey_list %}
 <div class="jumbotron">
-  <button id="surveybutton" class="btn btn-primary" data-toggle="modal" data-target="#surveyModal" >Create Survey</button>
+{% if latest_survey_list %}
 <h3><u>My Surveys</u></h3>
 <ol>
         {% for survey in latest_survey_list %}

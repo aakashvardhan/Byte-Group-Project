@@ -1,12 +1,12 @@
 {% extends 'polls/dashboardlayout.html' %}
 {% block content %}
 <div id="maindiv">
+	<button id="cbutton" class="btn btn-primary" data-toggle="modal" data-target="#basicModal" >Create Polls</button>
+	<br><br>
 <div class="jumbotron">
-<button id="cbutton" class="btn btn-primary" data-toggle="modal" data-target="#basicModal" >Create Polls</button>
 <div class="modal fade" id="basicModal" role="dialog">
 </div>
 {% if latest_question_list %}
-<br><br>
 <h3 class="display-4">My Polls</h3>
 <div class="container">
 <ol>

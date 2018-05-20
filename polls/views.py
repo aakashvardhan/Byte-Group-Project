@@ -44,7 +44,6 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from datetime import datetime
 
-from django_otp.decorators import otp_required
 def home(request):
     if request.user.is_authenticated:
         return redirect('polls:dashboard')
@@ -95,6 +94,7 @@ def register(request):
             }
             r = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
             result = r.json()
+            print(result)
 
             if result['success']:
                 user = form.save(commit=False)
@@ -208,7 +208,7 @@ def vote(request,question_id):
             selected_choice.save()
             u = Votes(username = username,question_text = question)
             u.save()
-            return render(request, 'polls/vote.html',{'latest_question_list': latest_question_list,'choice' : selected_choice})
+            return render(request, 'polls/dashboard.html',{'latest_question_list': latest_question_list,'selected_choice' : selected_choice})
         else:
             return render(request, 'polls/dashboard.html', {
                 'questions':questions,
@@ -260,7 +260,7 @@ def createsurveys(request,question_count):
             return render(request,'polls/createsurveys.html', {"formset" : formset,"question_count" : question_count})
     else:
         formset = surveyformset()
-    context = { 'formset' : formset,"question_count" : question_count}
+    context = { 'formset' : formset,"question_count" : question_count,"date" : datetime.today().strftime("%Y-%m-%d %H:%M:%S")}
     return render(request,'polls/createsurveys.html', context)
 
 @login_required(login_url='/login')
@@ -278,15 +278,16 @@ def editsurvey(request,title_id):
                         surveyquestion = get_object_or_404(Surveyquestion,pk=question.id)
                         surveyquestion.question = request.POST['form-%d-question' % i]
                         surveyquestion.save()
-                title.title = request.POST['title']
-                title.modified = request.POST['pub_date']
-                title.save()
+            
             else:
                 print("No Change")
+            title.title = request.POST['title']
+            title.modified = request.POST['pub_date']
+            title.save()
             return redirect('polls:mysurveys')
     else:
         formset = surveyformset(initial=initialquestiondata)
-    context = { 'formset' : formset,'title_id' : title_id,'title' : title}
+    context = { 'formset' : formset,'title_id' : title_id,'title' : title,"date" : datetime.today().strftime("%Y-%m-%d %H:%M:%S")}
     return render(request,'polls/editsurvey.html', context)
 
 @login_required(login_url='/login')
@@ -320,7 +321,11 @@ def surveyresponse(request,title_id):
             if formset.has_changed():
                 for i,question in zip(range(len(formset)),ordquestions):
                     surveyquestion = get_object_or_404(Surveyquestion,pk=question.id)
-                    question.surveyanswer_set.create(title=question.title,answer=request.POST['form-%d-answer' % i],username = username)
+                    if question.surveyanswer_set.filter(username=username).exists():
+                        question.surveyanswer_set.update(title=question.title,answer=request.POST['form-%d-answer' % i],username = username)
+                    else:
+                        question.surveyanswer_set.create(title=question.title,answer=request.POST['form-%d-answer' % i],username = username)
+
                 title.responses = title.responses + 1
                 title.save()
             else:
@@ -328,7 +333,7 @@ def surveyresponse(request,title_id):
             return redirect('polls:surveys')
     else:
         formset = surveyformset(initial=data)
-    context = { 'formset' : formset,'title_id' : title_id,'title' : title}
+    context = { 'formset' : formset,'title_id' : title_id,'title' : title,"date" : datetime.today().strftime("%Y-%m-%d %H:%M:%S")}
     return render(request,'polls/surveyresponse.html', context)
 
 @login_required(login_url='/login')

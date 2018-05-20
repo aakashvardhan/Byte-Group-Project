@@ -6,13 +6,6 @@
 
 {% block content %}
 <div class="container">
-
-{% if user.is_authenticated %}
-<h3 align="right"> Welcome {{ user.username }} </h3>
-{% else %}
-<h3> You are not logged in </h3>
-{% endif %}
-<div class="jumbotron">
     {% if messages %}
         <ul class="messages">
             {% for message in messages %}
@@ -20,10 +13,22 @@
             {% endfor %}
         </ul>
     {% endif %}
+
+
+{% if user.is_authenticated %}
+<h3 align="right"> Welcome {{ user.username }} </h3>
+{% else %}
+<h3> You are not logged in </h3>
+{% endif %}
+<div class="jumbotron">
+    
 {% if latest_question_list %}
 <h2 class="display-4">Discover Polls</h2>
 <br>
-{% if selected_choice %}<h3>You have voted for <strong>{{selected_choice.choice_text}}</strong></h3>{% endif %} 
+{% if selected_choice %}<h3>You have voted for <strong>{{selected_choice.choice_text}}</strong></h3>
+<a href="{% url 'polls:dashboard' %}">Vote again?</a>
+
+{% endif %} 
 {% if error_message %}<p style="color:red"><strong>{{ error_message }}</strong></p>{% endif %}
     <ol>
     {% for question in questions.object_list %}
@@ -47,8 +52,10 @@
                     
             </form>
     </ul>
-    <br><br><br>
+    <br>
     {% endfor %}
+    
+    </ol>
     <nav aria-label="Dashboard">
     <ul class="pagination">
         {% if questions.has_previous %}
@@ -65,7 +72,6 @@
         {% endif %}
 </ul>
 </nav>
-    </ol>
 {% else %}
     <p>No polls are available.</p>
 {% endif %}

@@ -1,5 +1,10 @@
 {% load bootstrap4 %}
+<style>
 
+.navbar-nav li a:hover {
+    color: #1abc9c !important;
+}
+</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <nav class="navbar fixed-top navbar-inverse">
   <div class="container">
@@ -25,7 +30,7 @@
           {{ user.username }}
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="{% url 'polls:change_password' %}">Change Password</a>
+          <a class="dropdown-item" href="{% url 'polls:change_password' %}"><span class="glyphicon glyphicon-cog"></span>Change Password</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="{% url 'polls:logout' %}"><span class="glyphicon glyphicon-home">Logout</a>
         </div>

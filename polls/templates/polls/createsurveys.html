@@ -13,7 +13,7 @@
                     <input type="text" name="title" required="required" class="form-control" placeholder="Title"  maxlength="100" id="id_title">
                     <br><br>
                     <label for="id_pub_date">Publication date:</label>
-                    <input type="text" name="pub_date" value="2018-04-22 17:41:08" required="required" class="form-control" placeholder="Publication Date" id="id_pub_date">
+                    <input type="text" name="pub_date" value="{{ date }}" required="required" class="form-control" placeholder="Publication Date" id="id_pub_date">
                     <br><br>
                     {% for form in formset %}
                     {% bootstrap_form form %}
