@@ -50,11 +50,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'widget_tweaks',
     'bootstrap4',
-    'django_otp',
-    'django_otp.plugins.otp_static',
-    'django_otp.plugins.otp_totp',
-    'two_factor',
-    'otp_yubikey',
 
 ]
 
@@ -66,8 +61,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django_otp.middleware.OTPMiddleware',
+
 ]
 
 ROOT_URLCONF = 'g_project.urls'
@@ -152,9 +146,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-LOGIN_URL = 'two_factor:login'
-LOGOUT_URL = 'polls:logout'
-LOGIN_REDIRECT_URL = 'polls:dashboard'
+
 
 
 
